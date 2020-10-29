@@ -91,8 +91,11 @@ if __name__ == '__main__':
 
     today = date.today()
 
+    #example DSC
     dsc = ('fff1', 'dsc2', today, '192.168.1.2', 'pen17', 'inband', 'network', '5UP9490dj2', 'p18669-001', '4.14.18', 'armv8');
 
     #insert a dsc
     insert_dsc(conn, dsc)
+
+    #list table
     select_all_dsc(conn)
