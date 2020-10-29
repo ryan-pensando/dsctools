@@ -8,9 +8,9 @@ def create_connection(db_file):
     conn = None
     try:
         conn = sqlite3.connect(db_file)
-        #print(sqlite3.version)
+        print(sqlite3.version)
     except Error as e:
-        print(e)
+        print(e + "table error")
     finally:
         return conn
 
@@ -34,8 +34,9 @@ def create_dsc(conn, dsc):
     :param project:
     :return: project id
     """
-    sql = ''' INSERT INTO dsc_inventory(mac, name, discovery_date, ip)
-              VALUES(?,?,?,?) '''
+    sql = ''' INSERT INTO dsc_inventory(mac, ip, discovery_date, id, host, network_mode, mgmt_mode, 
+            serial_num, sku, kernel, proc )
+            VALUES(?,?,?,?,?,?,?,?,?,?,?) '''
     cur = conn.cursor()
     cur.execute(sql, dsc)
     conn.commit()
@@ -67,9 +68,17 @@ if __name__ == '__main__':
 
     sql_create_dsc_table = """ CREATE TABLE IF NOT EXISTS dsc_inventory (
                                             mac text PRIMARY KEY,
-                                            name text NOT NULL,
+                                            id text NOT NULL,
                                             discovery_date text,
-                                            ip text not null
+                                            ip text NOT NULL,
+                                            host text NOT NULL,
+                                            network_mode text NOT NULL,
+                                            mgmt_mode text NOT NULL,
+                                            serial_num text NOT NULL,
+                                            sku text NOT NULL, 
+                                            kernel text NOT NULL,
+                                            proc text NOT NULL
+                                            
                                         ); """
 
     if conn is not None:
@@ -82,8 +91,8 @@ if __name__ == '__main__':
 
     today = date.today()
 
-    dsc = ('fff2', 'dsc2', date, '192.168.1.2');
+    dsc = ('fff1', 'dsc2', today, '192.168.1.2', 'pen17', 'inband', 'network', '5UP9490dj2', 'p18669-001', '4.14.18', 'armv8');
 
     #insert a dsc
-    #insert_dsc(conn, dsc)
+    insert_dsc(conn, dsc)
     select_all_dsc(conn)
